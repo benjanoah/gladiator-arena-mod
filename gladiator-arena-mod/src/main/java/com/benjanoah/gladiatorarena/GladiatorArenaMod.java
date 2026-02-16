@@ -11,5 +11,10 @@ public class GladiatorArenaMod implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Gladiator Arena Mod is loading! ⚔️🏛️");
+        
+        // Register commands
+        ArenaCommands.register();
+        
+        LOGGER.info("Arena commands registered!");
     }
 }
