@@ -1,0 +1,16 @@
+📜 TEXTURE MAKEN! 🎨
+
+Maak een texture voor de Colosseum Scroll!
+
+Bestandsnaam: colosseum_scroll.png
+Grootte: 16x16 pixels
+Formaat: PNG
+
+Ideeën:
+- Een scroll/boekrol 📜
+- Bruin/goud kleur (oud papier)
+- Misschien een Colosseum icoontje erop?
+- Gebruik je favoriete pixel art tool!
+
+Plaats het bestand hier (verwijder dit TXT bestand):
+src/main/resources/assets/gladiator-arena-mod/textures/item/colosseum_scroll.png
