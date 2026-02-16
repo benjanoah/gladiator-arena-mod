@@ -1,11 +1,10 @@
 package com.benjanoah.gladiatorarena;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.HuskEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -17,7 +16,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.Blocks;
-import net.minecraft.util.math.Vec3d;
 
 public class ColosseumScroll extends Item {
     
@@ -65,14 +63,16 @@ public class ColosseumScroll extends Item {
             template.place(world, spawnPos, spawnPos, new StructurePlacementData(), world.getRandom(), 2);
             
             // Teleport player to the center of the arena
-            if (player != null) {
+            if (player instanceof ServerPlayerEntity serverPlayer) {
                 BlockPos arenaCenter = spawnPos.add(10, 2, 10); // Center of 21x21 arena, 2 blocks up
-                player.teleport(arenaCenter.getX() + 0.5, arenaCenter.getY(), arenaCenter.getZ() + 0.5);
-                GladiatorArenaMod.LOGGER.info("📍 Teleported {} to arena center at {}", player.getName().getString(), arenaCenter);
+                serverPlayer.teleport(arenaCenter.getX() + 0.5, arenaCenter.getY(), arenaCenter.getZ() + 0.5);
+                GladiatorArenaMod.LOGGER.info("📍 Teleported {} to arena center at {}", serverPlayer.getName().getString(), arenaCenter);
+                
+                // Create arena session and start wave 1
+                ArenaSession session = new ArenaSession(world, spawnPos, serverPlayer);
+                GladiatorArenaMod.addArenaSession(serverPlayer.getUuid(), session);
+                session.spawnWave1();
             }
-            
-            // Spawn 5 husks randomly in the arena
-            spawnHusks(world, spawnPos, 5);
             
             // Play sound effect
             world.playSound(null, spawnPos, SoundEvents.ITEM_TOTEM_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
@@ -80,7 +80,6 @@ public class ColosseumScroll extends Item {
             // Send success message
             if (player != null) {
                 player.sendMessage(Text.literal("§6✨ Colosseum summoned! ⚔️🏛️"), false);
-                player.sendMessage(Text.literal("§c⚔️ THE GLADIATORS AWAKEN!"), false);
             }
             
             // Consume the scroll (remove 1 from stack)
@@ -99,28 +98,5 @@ public class ColosseumScroll extends Item {
             }
             return ActionResult.FAIL;
         }
-    }
-    
-    private void spawnHusks(ServerWorld world, BlockPos arenaPos, int count) {
-        for (int i = 0; i < count; i++) {
-            // Random offset within 21x21 arena
-            int offsetX = world.getRandom().nextInt(16) - 8; // -8 to +8 (center around middle)
-            int offsetZ = world.getRandom().nextInt(16) - 8; // -8 to +8
-            int offsetY = 2;  // Spawn on the floor (2 blocks up from spawnPos)
-            
-            BlockPos huskPos = arenaPos.add(10 + offsetX, offsetY, 10 + offsetZ); // +10 for arena center
-            
-            // Create and spawn husk
-            HuskEntity husk = EntityType.HUSK.create(world);
-            if (husk != null) {
-                husk.refreshPositionAndAngles(huskPos, 0.0f, 0.0f);
-                husk.setPersistent();
-                world.spawnEntity(husk);
-                
-                GladiatorArenaMod.LOGGER.info("⚔️ Spawned husk at {}", huskPos);
-            }
-        }
-        
-        GladiatorArenaMod.LOGGER.info("✅ Spawned {} husks in the arena", count);
     }
 }
