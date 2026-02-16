@@ -64,6 +64,13 @@ public class ColosseumScroll extends Item {
             BlockPos spawnPos = pos.up();
             template.place(world, spawnPos, spawnPos, new StructurePlacementData(), world.getRandom(), 2);
             
+            // Teleport player to the center of the arena
+            if (player != null) {
+                BlockPos arenaCenter = spawnPos.add(5, 2, 5); // Center of 10x10 arena, 2 blocks up
+                player.teleport(arenaCenter.getX() + 0.5, arenaCenter.getY(), arenaCenter.getZ() + 0.5);
+                GladiatorArenaMod.LOGGER.info("📍 Teleported {} to arena center at {}", player.getName().getString(), arenaCenter);
+            }
+            
             // Spawn 5 husks randomly in the arena
             spawnHusks(world, spawnPos, 5);
             
