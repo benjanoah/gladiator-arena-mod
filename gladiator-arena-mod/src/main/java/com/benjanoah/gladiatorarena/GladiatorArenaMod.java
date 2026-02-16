@@ -26,14 +26,10 @@ public class GladiatorArenaMod implements ModInitializer {
         // Register commands
         ArenaCommands.register();
         
-        // Register tick handler for wave checking
+        // Register tick handler for arena sessions
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            tickCounter++;
-            // Check every 20 ticks (1 second)
-            if (tickCounter >= 20) {
-                tickCounter = 0;
-                activeSessions.values().forEach(ArenaSession::checkWaveComplete);
-            }
+            // Tick all active arena sessions
+            activeSessions.values().forEach(ArenaSession::tick);
         });
         
         LOGGER.info("Gladiator Arena Mod initialized!");

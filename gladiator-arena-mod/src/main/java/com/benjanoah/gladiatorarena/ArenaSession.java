@@ -12,8 +12,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.enchantment.EnchantmentHelper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,11 +37,16 @@ public class ArenaSession {
         spawnHusks(5);
     }
     
-    public void checkWaveComplete() {
+    private void checkWaveComplete() {
+        // Don't check during countdown
+        if (wave2Countdown > 0) {
+            return;
+        }
+        
         // Remove dead husks from tracking
         waveHusks.removeIf(uuid -> world.getEntity(uuid) == null || !world.getEntity(uuid).isAlive());
         
-        if (waveHusks.isEmpty()) {
+        if (waveHusks.isEmpty() && currentWave > 0) {
             if (currentWave == 1) {
                 startWave2();
             } else if (currentWave == 2) {
@@ -51,6 +54,8 @@ public class ArenaSession {
             }
         }
     }
+    
+    private int wave2Countdown = -1;
     
     private void startWave2() {
         currentWave = 2;
@@ -64,19 +69,24 @@ public class ArenaSession {
         player.sendMessage(Text.literal("§6✨ WAVE 1 COMPLETE!"), false);
         world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 1.0f, 1.0f);
         
-        // Delayed wave 2 start (3 seconds)
-        world.getServer().execute(() -> {
-            try {
-                Thread.sleep(3000);
-                world.getServer().execute(() -> {
-                    player.sendMessage(Text.literal("§c🌊 WAVE 2 INCOMING - 7 HUSKS!"), false);
-                    world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.HOSTILE, 1.0f, 0.8f);
-                    spawnHusks(7);
-                });
-            } catch (InterruptedException e) {
-                GladiatorArenaMod.LOGGER.error("Wave delay interrupted", e);
+        // Set countdown for wave 2 (3 seconds = 60 ticks)
+        wave2Countdown = 60;
+    }
+    
+    public void tick() {
+        if (wave2Countdown > 0) {
+            wave2Countdown--;
+            if (wave2Countdown == 0) {
+                // Start wave 2!
+                player.sendMessage(Text.literal("§c🌊 WAVE 2 INCOMING - 7 HUSKS!"), false);
+                world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.HOSTILE, 1.0f, 0.8f);
+                spawnHusks(7);
+                wave2Countdown = -1;
             }
-        });
+        }
+        
+        // Check wave completion
+        checkWaveComplete();
     }
     
     private void spawnHusks(int count) {
@@ -120,10 +130,9 @@ public class ArenaSession {
             // Gold (3-7)
             chest.setStack(2, new ItemStack(Items.GOLD_INGOT, 3 + world.getRandom().nextInt(5)));
             
-            // Magic Staff (enchanted stick placeholder)
-            ItemStack magicStaff = new ItemStack(Items.STICK);
+            // Magic Staff (placeholder - will add powers later!)
+            ItemStack magicStaff = new ItemStack(Items.BLAZE_ROD);
             magicStaff.setCustomName(Text.literal("§5✨ Magic Staff §7(Coming Soon!)"));
-            EnchantmentHelper.set(java.util.Map.of(Enchantments.KNOCKBACK, 2), magicStaff);
             chest.setStack(3, magicStaff);
             
             // Bonus: Golden Apple
