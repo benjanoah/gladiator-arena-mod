@@ -96,10 +96,10 @@ public class ColosseumScroll extends Item {
     
     private void spawnHusks(ServerWorld world, BlockPos arenaPos, int count) {
         for (int i = 0; i < count; i++) {
-            // Random offset within arena (adjust range based on your arena size)
-            int offsetX = world.getRandom().nextInt(20) - 10; // -10 to +10
-            int offsetZ = world.getRandom().nextInt(20) - 10; // -10 to +10
-            int offsetY = world.getRandom().nextInt(5) + 2;  // +2 to +7 blocks up
+            // Random offset within 10x10 arena
+            int offsetX = world.getRandom().nextInt(8) - 4; // -4 to +4
+            int offsetZ = world.getRandom().nextInt(8) - 4; // -4 to +4
+            int offsetY = 2;  // Spawn on the floor (2 blocks up from spawnPos)
             
             BlockPos huskPos = arenaPos.add(offsetX, offsetY, offsetZ);
             
