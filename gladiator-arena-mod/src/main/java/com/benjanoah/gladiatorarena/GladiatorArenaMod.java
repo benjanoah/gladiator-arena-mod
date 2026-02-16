@@ -28,8 +28,8 @@ public class GladiatorArenaMod implements ModInitializer {
         
         // Register tick handler for arena sessions
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            // Tick all active arena sessions
-            activeSessions.values().forEach(ArenaSession::tick);
+            // Tick all active arena sessions (use copy to avoid ConcurrentModificationException)
+            new java.util.ArrayList<>(activeSessions.values()).forEach(ArenaSession::tick);
         });
         
         LOGGER.info("Gladiator Arena Mod initialized!");
