@@ -70,7 +70,7 @@ public class ArenaSession {
                 Thread.sleep(3000);
                 world.getServer().execute(() -> {
                     player.sendMessage(Text.literal("§c🌊 WAVE 2 INCOMING - 7 HUSKS!"), false);
-                    world.playSound(null, player.getBlockPos(), SoundEvents.EVENT_RAID_HORN, SoundCategory.HOSTILE, 1.0f, 0.8f);
+                    world.playSound(null, player.getBlockPos(), SoundEvents.ENTITY_ENDER_DRAGON_GROWL, SoundCategory.HOSTILE, 1.0f, 0.8f);
                     spawnHusks(7);
                 });
             } catch (InterruptedException e) {
