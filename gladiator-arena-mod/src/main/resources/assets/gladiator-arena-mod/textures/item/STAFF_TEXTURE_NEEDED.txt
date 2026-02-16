@@ -1,0 +1,21 @@
+🪄 TEXTURE MAKEN VOOR STAFF! 🎨
+
+Maak een texture voor de Staff of Colosseum's Might!
+
+Bestandsnaam: colosseum_staff.png
+Grootte: 16x16 pixels
+Formaat: PNG
+
+Ideeën:
+- Paarse/gouden staf 💜🪙
+- Misschien kristal bovenaan? 💎
+- Epic/magical look! ✨
+- Gebruik blaze rod als inspiratie maar make it cooler!
+
+Plaats het bestand hier (verwijder dit TXT bestand):
+src/main/resources/assets/gladiator-arena-mod/textures/item/colosseum_staff.png
+
+POWERS:
+- Right-click = 20 sec buffs (Strength 2, Speed 2, Jump Boost 2)
+- 60 second cooldown
+- Always glowing (enchantment effect)!

@@ -130,9 +130,8 @@ public class ArenaSession {
             // Gold (3-7)
             chest.setStack(2, new ItemStack(Items.GOLD_INGOT, 3 + world.getRandom().nextInt(5)));
             
-            // Magic Staff (placeholder - will add powers later!)
-            ItemStack magicStaff = new ItemStack(Items.BLAZE_ROD);
-            magicStaff.setCustomName(Text.literal("§5✨ Magic Staff §7(Coming Soon!)"));
+            // Staff of Colosseum's Might!
+            ItemStack magicStaff = new ItemStack(ModItems.COLOSSEUM_STAFF);
             chest.setStack(3, magicStaff);
             
             // Bonus: Golden Apple
