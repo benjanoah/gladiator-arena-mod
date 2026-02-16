@@ -1,5 +1,7 @@
 package com.benjanoah.gladiatorarena;
 
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.mob.HuskEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -15,6 +17,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.Vec3d;
 
 public class ColosseumScroll extends Item {
     
@@ -61,12 +64,16 @@ public class ColosseumScroll extends Item {
             BlockPos spawnPos = pos.up();
             template.place(world, spawnPos, spawnPos, new StructurePlacementData(), world.getRandom(), 2);
             
+            // Spawn 5 husks randomly in the arena
+            spawnHusks(world, spawnPos, 5);
+            
             // Play sound effect
             world.playSound(null, spawnPos, SoundEvents.ITEM_TOTEM_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
             
             // Send success message
             if (player != null) {
                 player.sendMessage(Text.literal("§6✨ Colosseum opgeroepen! ⚔️🏛️"), false);
+                player.sendMessage(Text.literal("§c⚔️ DE GLADIATOREN ONTWAKEN!"), false);
             }
             
             // Consume the scroll (remove 1 from stack)
@@ -85,5 +92,28 @@ public class ColosseumScroll extends Item {
             }
             return ActionResult.FAIL;
         }
+    }
+    
+    private void spawnHusks(ServerWorld world, BlockPos arenaPos, int count) {
+        for (int i = 0; i < count; i++) {
+            // Random offset within arena (adjust range based on your arena size)
+            int offsetX = world.getRandom().nextInt(20) - 10; // -10 to +10
+            int offsetZ = world.getRandom().nextInt(20) - 10; // -10 to +10
+            int offsetY = world.getRandom().nextInt(5) + 2;  // +2 to +7 blocks up
+            
+            BlockPos huskPos = arenaPos.add(offsetX, offsetY, offsetZ);
+            
+            // Create and spawn husk
+            HuskEntity husk = EntityType.HUSK.create(world);
+            if (husk != null) {
+                husk.refreshPositionAndAngles(huskPos, 0.0f, 0.0f);
+                husk.setPersistent();
+                world.spawnEntity(husk);
+                
+                GladiatorArenaMod.LOGGER.info("⚔️ Spawned husk at {}", huskPos);
+            }
+        }
+        
+        GladiatorArenaMod.LOGGER.info("✅ Spawned {} husks in the arena", count);
     }
 }
