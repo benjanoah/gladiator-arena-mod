@@ -40,7 +40,7 @@ public class ColosseumScroll extends Item {
         // Check if the block clicked is sandstone
         if (!world.getBlockState(pos).isOf(Blocks.SANDSTONE)) {
             if (player != null) {
-                player.sendMessage(Text.literal("§6⚠ Je moet op sandstone klikken!"), true);
+                player.sendMessage(Text.literal("§6⚠ You must click on sandstone!"), true);
             }
             return ActionResult.FAIL;
         }
@@ -55,7 +55,7 @@ public class ColosseumScroll extends Item {
             if (template == null) {
                 GladiatorArenaMod.LOGGER.error("❌ Colosseum structure not found!");
                 if (player != null) {
-                    player.sendMessage(Text.literal("§c❌ Structure niet gevonden!"), false);
+                    player.sendMessage(Text.literal("§c❌ Structure not found!"), false);
                 }
                 return ActionResult.FAIL;
             }
@@ -79,8 +79,8 @@ public class ColosseumScroll extends Item {
             
             // Send success message
             if (player != null) {
-                player.sendMessage(Text.literal("§6✨ Colosseum opgeroepen! ⚔️🏛️"), false);
-                player.sendMessage(Text.literal("§c⚔️ DE GLADIATOREN ONTWAKEN!"), false);
+                player.sendMessage(Text.literal("§6✨ Colosseum summoned! ⚔️🏛️"), false);
+                player.sendMessage(Text.literal("§c⚔️ THE GLADIATORS AWAKEN!"), false);
             }
             
             // Consume the scroll (remove 1 from stack)
