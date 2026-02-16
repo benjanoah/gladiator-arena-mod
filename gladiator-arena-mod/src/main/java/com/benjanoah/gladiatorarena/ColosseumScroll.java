@@ -66,7 +66,7 @@ public class ColosseumScroll extends Item {
             
             // Teleport player to the center of the arena
             if (player != null) {
-                BlockPos arenaCenter = spawnPos.add(5, 2, 5); // Center of 10x10 arena, 2 blocks up
+                BlockPos arenaCenter = spawnPos.add(10, 2, 10); // Center of 21x21 arena, 2 blocks up
                 player.teleport(arenaCenter.getX() + 0.5, arenaCenter.getY(), arenaCenter.getZ() + 0.5);
                 GladiatorArenaMod.LOGGER.info("📍 Teleported {} to arena center at {}", player.getName().getString(), arenaCenter);
             }
@@ -103,12 +103,12 @@ public class ColosseumScroll extends Item {
     
     private void spawnHusks(ServerWorld world, BlockPos arenaPos, int count) {
         for (int i = 0; i < count; i++) {
-            // Random offset within 10x10 arena
-            int offsetX = world.getRandom().nextInt(8) - 4; // -4 to +4
-            int offsetZ = world.getRandom().nextInt(8) - 4; // -4 to +4
+            // Random offset within 21x21 arena
+            int offsetX = world.getRandom().nextInt(16) - 8; // -8 to +8 (center around middle)
+            int offsetZ = world.getRandom().nextInt(16) - 8; // -8 to +8
             int offsetY = 2;  // Spawn on the floor (2 blocks up from spawnPos)
             
-            BlockPos huskPos = arenaPos.add(offsetX, offsetY, offsetZ);
+            BlockPos huskPos = arenaPos.add(10 + offsetX, offsetY, 10 + offsetZ); // +10 for arena center
             
             // Create and spawn husk
             HuskEntity husk = EntityType.HUSK.create(world);
