@@ -7,9 +7,11 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.ZombieEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -27,10 +29,10 @@ public class MummyEntity extends ZombieEntity {
         );
     }
 
-    // Stats: 50 hearts, hits hard, but slow (like a mummy!)
+    // Stats: 100 hearts, hits hard, but slow (like a mummy!)
     public static DefaultAttributeContainer.Builder createMummyAttributes() {
         return ZombieEntity.createZombieAttributes()
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 100.0)
+            .add(EntityAttributes.GENERIC_MAX_HEALTH, 200.0)
             .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8.0)
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.22)
             .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 40.0);
@@ -64,6 +66,13 @@ public class MummyEntity extends ZombieEntity {
         if (target instanceof LivingEntity living) {
             living.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 100, 1));
         }
+    }
+
+    // Drop the Staff of Colosseum's Might when the mummy dies!
+    @Override
+    protected void dropLoot(DamageSource source, boolean causedByPlayer) {
+        super.dropLoot(source, causedByPlayer);
+        this.dropStack(new ItemStack(ModItems.COLOSSEUM_STAFF));
     }
 
     // Clean up boss bar when the mummy is removed from the world

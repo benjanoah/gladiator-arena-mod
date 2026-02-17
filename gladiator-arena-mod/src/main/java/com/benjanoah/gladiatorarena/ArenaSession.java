@@ -179,8 +179,8 @@ public class ArenaSession {
             chest.setStack(0, new ItemStack(Items.DIAMOND, 2 + world.getRandom().nextInt(3)));
             chest.setStack(1, new ItemStack(Items.IRON_INGOT, 5 + world.getRandom().nextInt(6)));
             chest.setStack(2, new ItemStack(Items.GOLD_INGOT, 3 + world.getRandom().nextInt(5)));
-            chest.setStack(3, new ItemStack(ModItems.COLOSSEUM_STAFF));
-            chest.setStack(4, new ItemStack(Items.GOLDEN_APPLE, 2));
+            chest.setStack(3, new ItemStack(Items.GOLDEN_APPLE, 2));
+            // Note: Staff of Colosseum's Might is dropped by the Mummy boss itself!
 
             GladiatorArenaMod.LOGGER.info("🎁 Spawned reward chest at {}", chestPos);
         }
