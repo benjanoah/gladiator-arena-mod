@@ -2,6 +2,7 @@ package com.benjanoah.gladiatorarena;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +15,6 @@ public class GladiatorArenaMod implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     
     private static final Map<UUID, ArenaSession> activeSessions = new HashMap<>();
-    private static int tickCounter = 0;
 
     @Override
     public void onInitialize() {
@@ -23,16 +23,21 @@ public class GladiatorArenaMod implements ModInitializer {
         // Register items
         ModItems.registerModItems();
         
+        // Register entities
+        ModEntities.registerModEntities();
+        
+        // Register entity attributes (health, damage, speed)
+        FabricDefaultAttributeRegistry.register(ModEntities.MUMMY, MummyEntity.createMummyAttributes());
+        
         // Register commands
         ArenaCommands.register();
         
-        // Register tick handler for arena sessions
+        // Tick all active arena sessions every server tick
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            // Tick all active arena sessions (use copy to avoid ConcurrentModificationException)
             new java.util.ArrayList<>(activeSessions.values()).forEach(ArenaSession::tick);
         });
         
-        LOGGER.info("Gladiator Arena Mod initialized!");
+        LOGGER.info("Gladiator Arena Mod initialized! 💀🏺");
     }
     
     public static void addArenaSession(UUID playerUuid, ArenaSession session) {

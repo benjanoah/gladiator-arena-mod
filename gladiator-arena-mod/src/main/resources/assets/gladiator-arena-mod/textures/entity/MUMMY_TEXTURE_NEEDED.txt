@@ -1,0 +1,24 @@
+🏺 MUMMY TEXTURE GOES HERE!
+
+Filename: mummy.png
+Size: 64 x 64 pixels
+Layout: SAME as a zombie skin (Steve/Alex model)
+
+How to make it:
+1. Download the default zombie texture for reference:
+   https://minecraft.wiki/w/Zombie (find the texture image)
+2. Open it in your pixel art program (Aseprite, etc.)
+3. Paint it like a MUMMY:
+   - Wrap the body in bandages (beige/white strips)
+   - Add glowing green eyes
+   - Dark brown/gold color underneath
+   - Maybe some Egyptian symbols?
+4. Save as mummy.png (64x64 pixels)
+5. Delete this .txt file
+6. Put mummy.png in this folder
+
+Tip: The zombie texture has this layout:
+- Head: top-left area
+- Body: middle area
+- Arms: sides
+- Legs: bottom area
