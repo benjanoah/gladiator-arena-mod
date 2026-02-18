@@ -75,6 +75,12 @@ public class MummyEntity extends ZombieEntity {
         this.dropStack(new ItemStack(ModItems.COLOSSEUM_STAFF));
     }
 
+    // Mummies branden NIET in de zon (ze zijn al duizenden jaren dood 🏺)
+    @Override
+    protected boolean isAffectedByDaylight() {
+        return false;
+    }
+
     // Clean up boss bar when the mummy is removed from the world
     @Override
     public void remove(RemovalReason reason) {
